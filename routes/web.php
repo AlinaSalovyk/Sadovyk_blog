@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RestTestController;
 use App\Http\Controllers\Blog\PostController;
+use App\Http\Controllers\Blog\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Blog\Admin\CategoryController;
 
 Route::get('/', function () {
@@ -28,14 +29,17 @@ Route::group([
     Route::resource('posts', PostController::class)->names('blog.posts');
 });
 
-//Адмінка
+
+// Адмінка
 $groupData = [
     'namespace' => 'App\Http\Controllers\Blog\Admin',
     'prefix' => 'admin/blog',
 ];
 Route::group($groupData, function () {
-    $methods = ['index','edit','store','update','create',];
+    Route::resource('posts', AdminPostController::class)
+        ->except(['show'])
+        ->names('blog.admin.posts');
     Route::resource('categories', CategoryController::class)
-    ->only($methods)
-    ->names('blog.admin.categories');
- });
+        ->only(['index','edit','store','update','create'])
+        ->names('blog.admin.categories');
+});
