@@ -1,31 +1,5 @@
 <?php
 
-namespace App\Jobs;
-
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Queue\Queueable;
-
-class ProcessVideoJob implements ShouldQueue
-{
-    use Queueable;
-
-    /**
-     * Create a new job instance.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Execute the job.
-     */
-    public function handle(): void
-    {
-        //
-    }
-<?php
-
 namespace App\Jobs\GenerateCatalog;
 
 use Illuminate\Bus\Queueable;
@@ -66,4 +40,3 @@ class AbstractJob implements ShouldQueue
     }
 }
 
-}
