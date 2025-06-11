@@ -10,6 +10,8 @@ use App\Http\Requests\BlogPostUpdateRequest;
 use Illuminate\Support\Str;
 use App\Models\BlogPost;
 use App\Http\Requests\BlogPostCreateRequest;
+use App\Jobs\BlogPostAfterCreateJob;
+use App\Jobs\BlogPostAfterDeleteJob;
 
 
 class PostController extends BaseController
@@ -19,14 +21,14 @@ class PostController extends BaseController
      */
     private $blogPostRepository;
 
-    /**
+     /**
      * @var BlogCategoryRepository
      */
     private $blogCategoryRepository; // властивість через яку будемо звертатись в репозиторій категорій
 
     public function __construct()
     {
-       //parent::__construct();
+        //parent::__construct();
         $this->blogPostRepository = app(BlogPostRepository::class); //app вертає об'єкт класа
         $this->blogCategoryRepository = app(BlogCategoryRepository::class);
     }
@@ -62,6 +64,8 @@ class PostController extends BaseController
         $item = (new BlogPost())->create($data); //створюємо об'єкт і додаємо в БД
 
         if ($item) {
+                    $job = new BlogPostAfterCreateJob($item);
+                    dispatch($job);
             return redirect()
                 ->route('blog.admin.posts.edit', [$item->id])
                 ->with(['success' => 'Успішно збережено']);
@@ -83,20 +87,18 @@ class PostController extends BaseController
     /**
      * Show the form for editing the specified resource.
      */
-
     public function edit(string $id)
-        {
-           $item = $this->blogPostRepository->getEdit($id);
-            if (empty($item)) {                         //помилка, якщо репозиторій не знайде наш ід
-                abort(404);
-            }
-            $categoryList = $this->blogCategoryRepository->getForComboBox();
-
-            return view('blog.admin.posts.edit', compact('item', 'categoryList'));
+    {
+       $item = $this->blogPostRepository->getEdit($id);
+        if (empty($item)) {                         //помилка, якщо репозиторій не знайде наш ід
+            abort(404);
         }
+        $categoryList = $this->blogCategoryRepository->getForComboBox();
 
+        return view('blog.admin.posts.edit', compact('item', 'categoryList'));
+    }
 
-     /**
+    /**
      * Update the specified resource in storage.
      */
     public function update(BlogPostUpdateRequest $request, string $id)
@@ -125,7 +127,7 @@ class PostController extends BaseController
     }
 
 
-     /**
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
@@ -135,6 +137,7 @@ class PostController extends BaseController
         //$result = BlogPost::find($id)->forceDelete(); //повне видалення з БД
 
         if ($result) {
+        BlogPostAfterDeleteJob::dispatch($id)->delay(20);
             return redirect()
                 ->route('blog.admin.posts.index')
                 ->with(['success' => "Запис id[$id] видалено"]);
