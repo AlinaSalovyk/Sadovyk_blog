@@ -22,15 +22,26 @@ class BlogPostRepository extends CoreRepository
      */
     public function getAllWithPaginate()
     {
-        $columns = ['id', 'title', 'slug', 'is_published', 'published_at', 'user_id', 'category_id',];
+        $columns = [
+            'id', 'title', 'slug', 'is_published',
+            'published_at', 'user_id', 'category_id',
+        ];
 
         $result = $this->startConditions()
-                    ->select($columns)
-                    ->orderBy('id','DESC')
-                    ->paginate(25);
+            ->select($columns)
+            ->orderBy('id', 'DESC')
+            ->with([
+                'category' => function ($query) {
+                    $query->select(['id', 'title']);
+                },
+                // 'category:id,title', // Альтернативний варіант без замикання
+                'user:id,name',
+            ])
+            ->paginate(25);
 
         return $result;
     }
+
     /**
      *  Отримати модель для редагування в адмінці
      *  @param int $id
