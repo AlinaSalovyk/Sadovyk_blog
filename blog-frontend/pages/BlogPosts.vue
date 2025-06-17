@@ -1,4 +1,3 @@
-<!-- ~/pages/BlogPosts.vue -->
 <template>
     <div class="p-4">
         <h1 class="text-3xl font-bold mb-6">Пости</h1>
@@ -21,7 +20,7 @@
                 <td class="p-2 border">{{ post.user.name }}</td>
                 <td class="p-2 border">{{ post.category.title }}</td>
                 <td class="p-2 border">
-                    <a :href="`/admin/blog/posts/${post.id}/edit`" class="text-blue-600 hover:underline">
+                    <a :href="`/blog/posts/${post.id}`" class="text-blue-600 hover:underline">
                         {{ post.title }}
                     </a>
                 </td>

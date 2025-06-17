@@ -50,7 +50,7 @@ const columns: DataTableColumns<Post> = [
             return h(
                 'a',
                 {
-                    href: `/admin/blog/posts/${row.id}/edit`,
+                    href: `/blog/posts/${row.id}`,
                     class: 'text-blue-600 hover:underline'
                 },
                 row.title
