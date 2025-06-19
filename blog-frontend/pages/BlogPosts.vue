@@ -1,9 +1,6 @@
 <template>
     <div class="p-4">
         <h1 class="text-3xl font-bold mb-6">Пости</h1>
-        <NuxtLink to="/admin/blog/posts/create" class="inline-block mb-4 text-blue-600 hover:underline">
-            Додати
-        </NuxtLink>
         <table class="w-full border-collapse">
             <thead>
             <tr class="bg-gray-100">

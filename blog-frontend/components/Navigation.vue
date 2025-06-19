@@ -1,19 +1,28 @@
 <template>
-    <nav class="p-4 bg-gray-100 flex gap-4">
-        <NuxtLink
-            to="/BlogPosts"
-            class="text-blue-600 hover:underline"
-            :class="{ 'font-bold': route.path === '/BlogPosts' }"
-        >
-            Plain Table
-        </NuxtLink>
-        <NuxtLink
-            to="/BlogPostsUi"
-            class="text-blue-600 hover:underline"
-            :class="{ 'font-bold': route.path === '/BlogPostsUi' }"
-        >
-            UI Table
-        </NuxtLink>
+    <nav class="bg-gray-50 border-b border-gray-200 px-6 py-3">
+        <div class="flex gap-6">
+            <NuxtLink
+                to="/BlogPosts"
+                class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                :class="{ 'text-gray-900 font-semibold': route.path === '/BlogPosts' }"
+            >
+                Plain Table
+            </NuxtLink>
+            <NuxtLink
+                to="/BlogPostsUi"
+                class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                :class="{ 'text-gray-900 font-semibold': route.path === '/BlogPostsUi' }"
+            >
+                UI Table
+            </NuxtLink>
+            <NuxtLink
+                to="/categories"
+                class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                :class="{ 'text-gray-900 font-semibold': route.path === '/categories' }"
+            >
+                Сategories
+            </NuxtLink>
+        </div>
     </nav>
 </template>
 
@@ -21,7 +30,3 @@
 import { useRoute } from 'vue-router'
 const route = useRoute()
 </script>
-
-<style>
-
-</style>
